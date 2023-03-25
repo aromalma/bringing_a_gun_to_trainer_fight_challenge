@@ -1,5 +1,6 @@
 def solution(dimensions, your_position, trainer_position, distance):
     import math
+    # function to get all reflections at x,y axis seperately
     def get_ref(dim,point,t,distance):
         temp,v=[-point,point+2*(dim-point)],[point]
 
@@ -26,10 +27,11 @@ def solution(dimensions, your_position, trainer_position, distance):
         return 0
 
     fir_mag={ang:mag}
-    
+    # axis wise reflections of trainer or enemy (E)
     xt,yt=get_ref(dimensions[0],trainer_position[0],your_position[0],distance),get_ref(dimensions[1],trainer_position[1],your_position[1],distance)
+    # axis wise reflections of You (U)
     xu,yu=get_ref(dimensions[0],your_position[0],your_position[0],distance),get_ref(dimensions[1],your_position[1],your_position[1],distance)
-   
+    # find all angles and distance of reflections of you
     for x in xu:
         for y in yu:
             mag,ang=polar(your_position,(x,y))
@@ -43,6 +45,7 @@ def solution(dimensions, your_position, trainer_position, distance):
     
     count=0
     hist=set()
+    # find all angles and distance of reflections of enemy
     for x in xt:
         for y in yt:
             
@@ -50,11 +53,11 @@ def solution(dimensions, your_position, trainer_position, distance):
 
             if mag>distance_sq:
                 continue
-
+            # check whether that direction already examined
             if ang in hist:
                 continue
             
-                
+            # check whther you reflections are not coming in between these shots  
             if ang in fir_mag and fir_mag[ang]<mag:
                 
                 continue
@@ -62,4 +65,6 @@ def solution(dimensions, your_position, trainer_position, distance):
             hist.add(ang)
             count+=1
             
-    return count                
+    return count
+if __name__ == "__main__":
+    solution([3,2], [2,1],[1,1], 4)
